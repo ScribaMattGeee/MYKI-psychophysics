@@ -1,5 +1,5 @@
 classdef Cyberglove < handle
-    % Cyberglove Summary of this class goes here
+    %   Cyberglove Summary of this class goes here
     %   Detailed explanation goes here
 
     properties (SetAccess = private) % other classes can't modify these options
