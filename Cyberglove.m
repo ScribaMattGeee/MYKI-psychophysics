@@ -93,6 +93,7 @@ classdef Cyberglove < handle
             obj.OldLastReading = obj.LastReading;
             obj.LastReading = [50 50 50 50 50];
             notify(obj, 'NewDataAvail')
+            writematrix(obj.GlovePositions, "tracciati.xlsx");
 
         end % StopAcquisition
 
