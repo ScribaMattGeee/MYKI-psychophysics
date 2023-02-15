@@ -93,7 +93,7 @@ classdef Cyberglove < handle
             obj.OldLastReading = obj.LastReading;
             obj.LastReading = [50 50 50 50 50];
             notify(obj, 'NewDataAvail')
-            writematrix(obj.GlovePositions, "tracciati.xlsx");
+%             writematrix(obj.GlovePositions, "tracciati.xlsx");
 
         end % StopAcquisition
 
@@ -152,7 +152,7 @@ classdef Cyberglove < handle
 
             switch(obj.StreamingStatus) % manage the streaming with a state machine
                 case 0
-%                     firstbyte = fread(obj.serial_p, 1, 'uint8');
+                    %                     firstbyte = fread(obj.serial_p, 1, 'uint8');
                     firstbyte = read(obj.serial_p, 1, 'uint8');
                     % if first byte is 0x53 (83), then go to the next step
                     if (firstbyte == 83)
@@ -164,73 +164,63 @@ classdef Cyberglove < handle
                 case 1
                     % wait until you have at least 19 bytes (i.e. one
                     % package) and read it
-%                     if (obj.serial_p.BytesAvailable > 18)
+                    %                     if (obj.serial_p.BytesAvailable > 18)
                     if (obj.serial_p.NumBytesAvailable > 18)
                         obj.StreamingStatus = 0;
-%                         pos = fread(obj.serial_p, 19, 'uint8');
+                        %                         pos = fread(obj.serial_p, 19, 'uint8');
                         pos = read(obj.serial_p, 19, 'uint8');
                         obj.raw_acq = pos;
                         % if the last byte is 0x00, package is OK, thus use it
                         if (pos(19) == 0)
-                            obj.LastReading(1) = (pos(1)+obj.CalData.offset(1))*obj.CalData.gain(1);          % Rotation
-                            obj.LastReading(2) = (pos(2) + pos(3)+obj.CalData.offset(2))*obj.CalData.gain(2); % Thumb MCP+IP
-                            obj.LastReading(3) = (pos(5) + pos(6)+obj.CalData.offset(3))*obj.CalData.gain(3); % Index MCP+IP
-                            obj.LastReading(4) = (pos(7) + pos(8)+obj.CalData.offset(4))*obj.CalData.gain(4); % Middle MCP+IP
-                            obj.LastReading(5) = (pos(10) + pos(11) + pos(13) + pos(14)+obj.CalData.offset(5))*obj.CalData.gain(5); % Index MCP+IP
-                            obj.LastReading = round(obj.LastReading);
-                            obj.LastReading(obj.LastReading > 255) = 254;
-                            obj.LastReading(obj.LastReading < 1) = 0;
-                            obj.OldLastReading = obj.LastReading;
-                            notify(obj, 'NewDataAvail')
-%                             disp(['posizioni: ', num2str(pos(1:18)')])
-                            dlmwrite('Closure05.csv',pos','-append');
-                            obj.GlovePositions(obj.pack,:) = obj.LastReading;
-                            obj.pack = obj.pack + 1;
-                            if obj.pack == 10001
-                                obj.pack = 0;
-                            end
-                            % plot(obj.GlovePositions)
+                            writematrix(pos,"streamed.txt","WriteMode","append");
                         end
                     end
             end
 
-%             if(obj.StreamingStatus == 0) % manage the streaming with a state machine
-%                 firstbyte = fread(obj.serial_p, 1, 'uint8');
-%                 % if first byte is 0x53 (83), then go to the next step
-%                 if (firstbyte == 83)
-%                     obj.StreamingStatus = 1;
-%                 else
-%                     obj.StreamingStatus = 0;
-%                 end
+
+%             switch(obj.StreamingStatus) % manage the streaming with a state machine
+%                 case 0
+% %                     firstbyte = fread(obj.serial_p, 1, 'uint8');
+%                     firstbyte = read(obj.serial_p, 1, 'uint8');
+%                     % if first byte is 0x53 (83), then go to the next step
+%                     if (firstbyte == 83)
+%                         obj.StreamingStatus = 1;
+%                     else
+%                         obj.StreamingStatus = 0;
+%                     end
+% 
+%                 case 1
+%                     % wait until you have at least 19 bytes (i.e. one
+%                     % package) and read it
+% %                     if (obj.serial_p.BytesAvailable > 18)
+%                     if (obj.serial_p.NumBytesAvailable > 18)
+%                         obj.StreamingStatus = 0;
+% %                         pos = fread(obj.serial_p, 19, 'uint8');
+%                         pos = read(obj.serial_p, 19, 'uint8');
+%                         obj.raw_acq = pos;
+%                         % if the last byte is 0x00, package is OK, thus use it
+%                         if (pos(19) == 0)
+%                             obj.LastReading(1) = (pos(1)+obj.CalData.offset(1))*obj.CalData.gain(1);          % Rotation
+%                             obj.LastReading(2) = (pos(2) + pos(3)+obj.CalData.offset(2))*obj.CalData.gain(2); % Thumb MCP+IP
+%                             obj.LastReading(3) = (pos(5) + pos(6)+obj.CalData.offset(3))*obj.CalData.gain(3); % Index MCP+IP
+%                             obj.LastReading(4) = (pos(7) + pos(8)+obj.CalData.offset(4))*obj.CalData.gain(4); % Middle MCP+IP
+%                             obj.LastReading(5) = (pos(10) + pos(11) + pos(13) + pos(14)+obj.CalData.offset(5))*obj.CalData.gain(5); % Index MCP+IP
+%                             obj.LastReading = round(obj.LastReading);
+%                             obj.LastReading(obj.LastReading > 255) = 254;
+%                             obj.LastReading(obj.LastReading < 1) = 0;
+%                             obj.OldLastReading = obj.LastReading;
+%                             notify(obj, 'NewDataAvail')
+% %                             disp(['posizioni: ', num2str(pos(1:18)')])
+%                             dlmwrite('Closure05.csv',pos','-append');
+%                             obj.GlovePositions(obj.pack,:) = obj.LastReading;
+%                             obj.pack = obj.pack + 1;
+%                             if obj.pack == 10001
+%                                 obj.pack = 0;
+%                             end
+%                             % plot(obj.GlovePositions)
+%                         end
+%                     end
 %             end
-%
-%             if(obj.StreamingStatus == 1)
-%                 % wait until you have at least 19 bytes (i.e. one
-%                 % package) and read it
-%                 %if (obj.serial_p.BytesAvailable > 18)
-%                 obj.StreamingStatus = 0;
-%                 pos = fread(obj.serial_p, 19, 'uint8');
-%                 % if the last byte is 0x00, package is OK, thus use it
-%                 if (pos(19) == 0)
-%                     obj.LastReading(1) = (pos(1)+obj.CalData.offset(1))*obj.CalData.gain(1);          % Rotation
-%                     obj.LastReading(2) = (pos(2) + pos(3)+obj.CalData.offset(2))*obj.CalData.gain(2); % Thumb MCP+IP
-%                     obj.LastReading(3) = (pos(5) + pos(6)+obj.CalData.offset(3))*obj.CalData.gain(3); % Index MCP+IP
-%                     obj.LastReading(4) = (pos(7) + pos(8)+obj.CalData.offset(4))*obj.CalData.gain(4); % Middle MCP+IP
-%                     obj.LastReading(5) = (pos(10) + pos(11) + pos(13) + pos(14)+obj.CalData.offset(5))*obj.CalData.gain(5); % Index MCP+IP
-%                     obj.LastReading = round(obj.LastReading);
-%                     obj.LastReading(obj.LastReading > 255) = 254;
-%                     obj.LastReading(obj.LastReading < 1) = 0;
-%                     obj.OldLastReading = obj.LastReading;
-%                     notify(obj, 'NewDataAvail')
-% %                     disp(['posizioni: ', num2str(obj.LastReading)])
-% %                     obj.GlovePositions(obj.pack,:) = obj.LastReading;
-% %                     obj.pack = obj.pack + 1;
-% %                     if obj.pack == 10001
-% %                         obj.pack = 0;
-% %                     end
-% %                     plot(obj.GlovePositions)
-%                 end
-%              end
 
         end % ReadData
 
