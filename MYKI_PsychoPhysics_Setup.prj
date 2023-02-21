@@ -1,0 +1,68 @@
+<deployment-project plugin="plugin.apptool" plugin-version="1.0">
+  <configuration build-checksum="264143171" file="C:\Users\matti\OneDrive\Documenti\SSUP\ScriptsMYKI\MYKI-psychophysics\MYKI_PsychoPhysics_Setup.prj" location="C:\Users\matti\OneDrive\Documenti\SSUP\ScriptsMYKI\MYKI-psychophysics" name="MYKI_PsychoPhysics_Setup" target="target.mlapps" target-name="Package App">
+    <param.appname>MYKI_PsychoPhysics_Setup</param.appname>
+    <param.authnamewatermark>Mattia Gentile</param.authnamewatermark>
+    <param.email>mattia.gentile@santannapisa.it</param.email>
+    <param.company />
+    <param.icon />
+    <param.icons />
+    <param.summary>Matlab Application to guide PsychoPhysics experiment part of MYKI</param.summary>
+    <param.description>Needed:
+1) TactorTDK installed
+2) MatlabTDK for tactors in path
+3) Cyberglove.m included for cyberglove3
+4) DataTags for table variable naming</param.description>
+    <param.screenshot>C:\Users\matti\AppData\Local\Temp\tp4d76d956_a768_4108_b83a_2774b8e099b0.png</param.screenshot>
+    <param.version>1.0</param.version>
+    <param.products.name />
+    <param.products.id />
+    <param.products.version />
+    <param.platforms />
+    <param.output>${PROJECT_ROOT}</param.output>
+    <param.guid>33770725-cc1f-4f1b-8de6-b3f2f040b1cb</param.guid>
+    <unset>
+      <param.company />
+      <param.icon />
+      <param.icons />
+      <param.version />
+      <param.products.name />
+      <param.products.id />
+      <param.products.version />
+      <param.platforms />
+      <param.output />
+    </unset>
+    <fileset.main>
+      <file>${PROJECT_ROOT}\MYKI_PsychoPhysics.mlapp</file>
+    </fileset.main>
+    <fileset.depfun>
+      <file>${PROJECT_ROOT}\Cyberglove.m</file>
+      <file>${PROJECT_ROOT}\DataTags.mat</file>
+      <file>${PROJECT_ROOT}\MATLAB64_TDK-1.0.5.0\TactorInterfaceML.m</file>
+    </fileset.depfun>
+    <fileset.resources />
+    <fileset.package />
+    <build-deliverables>
+      <file location="C:\Users\matti\OneDrive\Documenti\SSUP\ScriptsMYKI" name="MYKI-psychophysics" optional="false">C:\Users\matti\OneDrive\Documenti\SSUP\ScriptsMYKI\MYKI-psychophysics</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>C:\Program Files\MATLAB\R2022b</root>
+      <toolboxes />
+    </matlab>
+    <platform>
+      <unix>false</unix>
+      <mac>false</mac>
+      <windows>true</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>false</linux>
+      <solaris>false</solaris>
+      <osver>10.0</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>win64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>
